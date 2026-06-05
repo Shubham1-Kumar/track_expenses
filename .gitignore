@@ -1,0 +1,20 @@
+# Python Virtual Environments
+venv/
+.venv/
+env/
+
+# Python caching and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment variables and secrets
+.env
+
+# Database files
+expense_tracker.db
+
+# IDE and tool specific configurations
+.claude/plans/
+.DS_Store
