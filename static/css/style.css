@@ -565,6 +565,18 @@ a { color: inherit; text-decoration: none; }
     color: var(--accent-2);
 }
 
+.legal-inner ul {
+    margin: 0 0 1rem 1.2rem;
+    padding: 0;
+}
+
+.legal-inner li {
+    font-size: 1rem;
+    line-height: 1.65;
+    margin-bottom: 0.6rem;
+    color: var(--ink-soft);
+}
+
 /* ------------------------------------------------------------------ */
 /* Responsive                                                          */
 /* ------------------------------------------------------------------ */
