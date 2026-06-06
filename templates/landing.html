@@ -98,4 +98,22 @@
     </div>
 </section>
 
+<div class="video-modal" id="videoModal" aria-hidden="true" role="dialog" aria-modal="true" hidden>
+    <div class="video-modal-backdrop" data-modal-close></div>
+    <div class="video-modal-content">
+        <button type="button" class="video-modal-close" data-modal-close aria-label="Close video">×</button>
+        <div class="video-modal-frame">
+            <iframe
+                id="videoModalIframe"
+                src=""
+                data-src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                title="Spendly demo video"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+            ></iframe>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
