@@ -63,6 +63,47 @@ def init_db():
         connection.close()
 
 
+def get_user_by_email(email):
+    """Look up a user by email (case-insensitive). Returns the row or None."""
+    email = email.strip().lower()
+    connection = get_db()
+    try:
+        cursor = connection.execute(
+            """
+            SELECT id, name, email, password_hash, created_at
+            FROM users
+            WHERE email = ?
+            """,
+            (email,),
+        )
+        return cursor.fetchone()
+    finally:
+        connection.close()
+
+
+def create_user(name, email, password_hash):
+    """Insert a new user row. Returns the new user's id.
+
+    Email is lowercased before insert so casing differences never produce
+    duplicate accounts — the users.email UNIQUE constraint would still catch
+    them, but the route produces a friendlier error first.
+    """
+    email = email.strip().lower()
+    connection = get_db()
+    try:
+        cursor = connection.execute(
+            """
+            INSERT INTO users (name, email, password_hash)
+            VALUES (?, ?, ?)
+            """,
+            (name, email, password_hash),
+        )
+        connection.commit()
+        return int(cursor.lastrowid)
+    finally:
+        connection.close()
+
+
 def seed_db():
     """Insert one demo user and 8 sample expenses — only if users is empty.
 
