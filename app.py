@@ -1,8 +1,14 @@
-from flask import Flask, render_template
+import os
 
-from database.db import get_db, init_db, seed_db
+from flask import Flask, render_template, redirect, request, session, url_for
+
+from database.db import create_user, get_db, get_user_by_email, init_db, seed_db
+from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
+# Required for flask.session to sign cookies. Override in production via the
+# SECRET_KEY env var; the dev fallback keeps the tutorial runnable out of the box.
+app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-change-me")
 
 # ------------------------------------------------------------------ #
 # Routes                                                              #
@@ -13,8 +19,36 @@ def landing():
     return render_template("landing.html")
 
 
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register():
+    if request.method == "POST":
+        name = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip()
+        password = request.form.get("password", "")
+
+        # Validation — each branch re-renders the form with the submitted
+        # values and an error message. Never redirect on validation failure.
+        error = None
+        if not name or not email or not password:
+            error = "All fields are required."
+        elif len(name) > 100:
+            error = "Name must be 100 characters or fewer."
+        else:
+            parts = email.split("@")
+            if len(parts) != 2 or not parts[0].strip() or not parts[1].strip():
+                error = "Please enter a valid email address."
+            elif len(password) < 8:
+                error = "Password must be at least 8 characters."
+            elif get_user_by_email(email) is not None:
+                error = "An account with that email already exists."
+
+        if error:
+            return render_template("register.html", error=error, name=name, email=email)
+
+        new_id = create_user(name, email, generate_password_hash(password))
+        session["user_id"] = new_id
+        return redirect(url_for("profile"))
+
     return render_template("register.html")
 
 
