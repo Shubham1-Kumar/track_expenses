@@ -52,8 +52,28 @@ def register():
     return render_template("register.html")
 
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
+    if request.method == "POST":
+        email = request.form.get("email", "").strip()
+        password = request.form.get("password", "")
+
+        # Single generic error for "unknown email" and "wrong password" so
+        # callers cannot enumerate which accounts exist.
+        error = None
+        if not email or not password:
+            error = "Email and password are required."
+        else:
+            user = get_user_by_email(email)
+            if user is None or not check_password_hash(user["password_hash"], password):
+                error = "Invalid email or password."
+
+        if error:
+            return render_template("login.html", error=error, email=email)
+
+        session["user_id"] = user["id"]
+        return redirect(url_for("profile"))
+
     return render_template("login.html")
 
 
@@ -73,7 +93,10 @@ def privacy():
 
 @app.route("/logout")
 def logout():
-    return "Logout — coming in Step 3"
+    # Safe on an empty session — Flask's session.clear() is a no-op when no
+    # keys are set, so this works whether the user is signed in or not.
+    session.clear()
+    return redirect(url_for("landing"))
 
 
 @app.route("/profile")
