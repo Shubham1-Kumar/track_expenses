@@ -52,8 +52,28 @@ def register():
     return render_template("register.html")
 
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
+    if request.method == "POST":
+        email = request.form.get("email", "").strip()
+        password = request.form.get("password", "")
+
+        # Single generic error for "unknown email" and "wrong password" so
+        # callers cannot enumerate which accounts exist.
+        error = None
+        if not email or not password:
+            error = "Email and password are required."
+        else:
+            user = get_user_by_email(email)
+            if user is None or not check_password_hash(user["password_hash"], password):
+                error = "Invalid email or password."
+
+        if error:
+            return render_template("login.html", error=error, email=email)
+
+        session["user_id"] = user["id"]
+        return redirect(url_for("profile"))
+
     return render_template("login.html")
 
 
@@ -73,12 +93,48 @@ def privacy():
 
 @app.route("/logout")
 def logout():
-    return "Logout — coming in Step 3"
+    # Safe on an empty session — Flask's session.clear() is a no-op when no
+    # keys are set, so this works whether the user is signed in or not.
+    session.clear()
+    return redirect(url_for("landing"))
 
 
 @app.route("/profile")
 def profile():
-    return "Profile page — coming in Step 4"
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    user = {
+        "name": "Priya Sharma",
+        "email": "priya@example.com",
+        "member_since": "January 2026",
+        "initials": "PS",
+    }
+    stats = {
+        "total_spent": "₹4,480",
+        "transaction_count": 8,
+        "top_category": "Bills",
+    }
+    expenses = [
+        {"date": "Jun 14, 2026", "description": "Metro pass",      "category": "Transport",     "amount": "₹80"},
+        {"date": "Jun 13, 2026", "description": "New shoes",        "category": "Shopping",      "amount": "₹1,200"},
+        {"date": "Jun 12, 2026", "description": "Movie night",      "category": "Entertainment", "amount": "₹600"},
+        {"date": "Jun 10, 2026", "description": "Pharmacy",         "category": "Health",        "amount": "₹450"},
+        {"date": "Jun 08, 2026", "description": "Electricity bill", "category": "Bills",         "amount": "₹1,500"},
+        {"date": "Jun 03, 2026", "description": "Lunch at office",  "category": "Food",          "amount": "₹180"},
+        {"date": "Jun 01, 2026", "description": "Groceries",        "category": "Food",          "amount": "₹350"},
+        {"date": "Jun 05, 2026", "description": "Uber to airport",  "category": "Transport",     "amount": "₹120"},
+    ]
+    categories = [
+        {"name": "Bills",         "amount": "₹1,500", "pct": 33},
+        {"name": "Shopping",      "amount": "₹1,200", "pct": 27},
+        {"name": "Entertainment", "amount": "₹600",   "pct": 13},
+        {"name": "Food",          "amount": "₹530",   "pct": 12},
+        {"name": "Health",        "amount": "₹450",   "pct": 10},
+        {"name": "Transport",     "amount": "₹200",   "pct": 5},
+    ]
+    return render_template("profile.html", user=user, stats=stats,
+                           expenses=expenses, categories=categories)
 
 
 @app.route("/expenses/add")
