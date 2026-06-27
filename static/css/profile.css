@@ -1,0 +1,304 @@
+/* ------------------------------------------------------------------ */
+/* Profile page layout                                                 */
+/* ------------------------------------------------------------------ */
+
+.profile-page {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* User info card                                                      */
+/* ------------------------------------------------------------------ */
+
+.profile-header {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+.profile-avatar {
+    flex-shrink: 0;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--paper);
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.02em;
+}
+
+.profile-name {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+}
+
+.profile-email {
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+    margin-bottom: 0.2rem;
+}
+
+.profile-since {
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+}
+
+/* ------------------------------------------------------------------ */
+/* Summary stats row                                                   */
+/* ------------------------------------------------------------------ */
+
+.profile-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.stat-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+.stat-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--accent);
+    stroke-width: 1.75;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+    font-weight: 500;
+}
+
+.stat-value {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--ink);
+    line-height: 1.1;
+}
+
+/* ------------------------------------------------------------------ */
+/* Section card (table + breakdown)                                    */
+/* ------------------------------------------------------------------ */
+
+.profile-section {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Transaction table                                                   */
+/* ------------------------------------------------------------------ */
+
+.table-scroll {
+    overflow-x: auto;
+}
+
+.expense-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.expense-table th {
+    text-align: left;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    padding: 0 1rem 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.expense-table td {
+    padding: 0.875rem 1rem 0.875rem 0;
+    border-bottom: 1px solid var(--border-soft);
+    color: var(--ink-soft);
+    vertical-align: middle;
+}
+
+.expense-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.expense-table tbody tr:hover td {
+    background: var(--paper);
+}
+
+.col-date {
+    white-space: nowrap;
+    color: var(--ink-muted);
+    font-size: 0.85rem;
+}
+
+.col-amount {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.expense-amount {
+    font-weight: 500;
+    color: var(--ink);
+}
+
+/* ------------------------------------------------------------------ */
+/* Category badges                                                     */
+/* ------------------------------------------------------------------ */
+
+.badge {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.badge-food          { background: var(--accent-2-light); color: var(--accent-2); }
+.badge-transport     { background: var(--accent-light);   color: var(--accent); }
+.badge-bills         { background: var(--border-soft);    color: var(--ink-soft); }
+.badge-health        { background: var(--danger-light);   color: var(--danger); }
+.badge-entertainment { background: var(--accent-2-light); color: var(--ink-soft); }
+.badge-shopping      { background: var(--accent-light);   color: var(--ink-soft); }
+.badge-other         { background: var(--border-soft);    color: var(--ink-muted); }
+
+/* ------------------------------------------------------------------ */
+/* Empty state                                                         */
+/* ------------------------------------------------------------------ */
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 3rem 1rem;
+    color: var(--ink-muted);
+}
+
+.empty-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--ink-faint);
+    stroke-width: 1.25;
+}
+
+.empty-text {
+    font-size: 0.95rem;
+    color: var(--ink-muted);
+}
+
+/* ------------------------------------------------------------------ */
+/* Category breakdown bars                                             */
+/* ------------------------------------------------------------------ */
+
+.cat-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cat-bar-row {
+    display: grid;
+    grid-template-columns: 110px 1fr 80px;
+    align-items: center;
+    gap: 1rem;
+}
+
+.cat-bar-label {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    font-weight: 500;
+}
+
+.cat-bar-track {
+    height: 8px;
+    background: var(--border-soft);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.cat-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.5s ease;
+}
+
+.cat-bar-amount {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    text-align: right;
+}
+
+/* Category bar fill colours — CSS variables only, no hex */
+.cat-fill-bills         { background: var(--ink-soft); }
+.cat-fill-shopping      { background: var(--accent-2); }
+.cat-fill-entertainment { background: var(--accent); }
+.cat-fill-food          { background: var(--accent-2); opacity: 0.65; }
+.cat-fill-health        { background: var(--danger); opacity: 0.7; }
+.cat-fill-transport     { background: var(--accent); opacity: 0.55; }
+.cat-fill-other         { background: var(--ink-muted); }
+
+/* ------------------------------------------------------------------ */
+/* Responsive                                                          */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 768px) {
+    .profile-page {
+        padding: 2rem 1rem;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .cat-bar-row {
+        grid-template-columns: 90px 1fr 70px;
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-page {
+        padding: 1.5rem 1rem;
+    }
+}
